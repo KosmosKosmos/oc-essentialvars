@@ -58,6 +58,11 @@ class Plugin extends PluginBase
 
             // Share the variables with the CMS template system
             Event::listen('cms.page.beforeDisplay', function ($controller, $url, $page) {
+                $hasCookieGroups = false;
+                if (class_exists('\OFFLINE\GDPR\Models\CookieGroup')) {
+                    $hasCookieGroups = \OFFLINE\GDPR\Models\CookieGroup::with('cookies')->orderBy('sort_order', 'ASC')->count() > 0;
+                }
+
                 $appVars = [
                     'url'         => url('/'),
                     'logo'        => BrandSetting::getLogo() ?: url('/modules/backend/assets/images/october-logo.svg'),
@@ -65,6 +70,7 @@ class Plugin extends PluginBase
                     'name'        => BrandSetting::get('app_name'),
                     'debug'       => Config::get('app.debug', false),
                     'description' => BrandSetting::get('app_tagline'),
+                    'hasCookieGroups' => $hasCookieGroups
                 ];
 
                 $controller->vars['app_url']         = $appVars['url'];
@@ -73,6 +79,7 @@ class Plugin extends PluginBase
                 $controller->vars['app_name']        = $appVars['name'];
                 $controller->vars['app_debug']       = $appVars['debug'];
                 $controller->vars['app_description'] = $appVars['description'];
+                $controller->vars['has_cookie_groups'] = $appVars['hasCookieGroups'];
             });
         });
     }
