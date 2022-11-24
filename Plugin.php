@@ -23,7 +23,7 @@ class Plugin extends PluginBase
         return [
             'name'        => 'EssentialVars',
             'description' => 'Adds the app_[url|logo|favicon|name|debug|description] variables to Mail & CMS templates',
-            'author'      => 'Luke Towers',
+            'author'      => 'KosmosKosmos',
             'icon'        => 'icon-code',
         ];
     }
